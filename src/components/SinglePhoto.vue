@@ -33,7 +33,7 @@ img.full_screen {
   height: 100%;
 }
 
-img:hover {
+img.small:hover {
   border: 2px solid grey;
 }
 

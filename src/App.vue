@@ -2,7 +2,13 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png" />
     <h1>{{ title }}</h1>
-    <navbar v-on:view-all="currentView='All'" />
+
+    <navbar
+      v-on:view-all="viewAll"
+      v-bind:title="selectedPhoto.fileName"
+      :uploadFunction="uploadPhoto"
+    />
+
     <div v-if="currentView==='All'">
       <singlephoto
         v-for="photo in photos"
@@ -21,7 +27,7 @@
 <script>
 import Navbar from "./components/Navbar";
 import SinglePhoto from "./components/SinglePhoto";
-import { listObjects } from "../utils/index";
+import { listObjects, saveObject } from "../utils/index";
 
 export default {
   name: "App",
@@ -48,9 +54,20 @@ export default {
   },
 
   methods: {
+    viewAll() {
+      this.currentView = "All";
+      this.selectedPhoto.fileName = "";
+    },
     selectPhoto(payload) {
       this.currentView = "Single";
       this.selectedPhoto.fileName = payload;
+    },
+    uploadPhoto(e) {
+      const file = e.target.files[0];
+      saveObject(file).then(() => {
+        this.currentView = "Single";
+        this.selectedPhoto.fileName = file.name;
+      });
     }
   }
 };
@@ -60,6 +77,7 @@ export default {
 body {
   margin: 0;
 }
+
 #app {
   text-align: center;
 }

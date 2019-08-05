@@ -1,5 +1,7 @@
 <template>
-  <div />
+  <div>
+    <button v-on:click="$emit('view-all')">View All</button>
+  </div>
 </template>
 
 <script>

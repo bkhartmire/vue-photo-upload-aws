@@ -4,10 +4,16 @@
     <h1>{{ title }}</h1>
     <navbar v-on:view-all="currentView='All'" />
     <div v-if="currentView==='All'">
-      <singlephoto v-for="photo in photos" v-bind:key="photo.id" v-bind:fileName="photo.fileName" />
+      <singlephoto
+        v-for="photo in photos"
+        v-bind:key="photo.id"
+        v-bind:fileName="photo.fileName"
+        size="small"
+        v-on:select="selectPhoto"
+      />
     </div>
     <div v-if="currentView==='Single'">
-      <singlephoto />
+      <singlephoto size="full_screen" v-bind:fileName="selectedPhoto.fileName" />
     </div>
   </div>
 </template>
@@ -39,11 +45,21 @@ export default {
         };
       });
     });
+  },
+
+  methods: {
+    selectPhoto(payload) {
+      this.currentView = "Single";
+      this.selectedPhoto.fileName = payload;
+    }
   }
 };
 </script>
 
 <style>
+body {
+  margin: 0;
+}
 #app {
   text-align: center;
 }

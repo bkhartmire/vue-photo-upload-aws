@@ -1,26 +1,36 @@
 <template>
   <div class="photo_div">
-    <img :src="encodeURI(`http://react.sprint.s3.amazonaws.com/${fileName}`)" :alt="fileName" />
+    <img
+      :class="size"
+      :src="encodeURI(`http://react.sprint.s3.amazonaws.com/${fileName}`)"
+      :alt="fileName"
+      @click="$emit('select', fileName)"
+    />
   </div>
 </template>
 
 <script>
 export default {
   name: "SinglePhoto",
-  props: ["fileName"],
+  props: ["fileName", "size"],
   created: function() {
     const name = this.fileName;
   }
 };
 </script>
 
-<style>
-img {
+<style scoped>
+img.small {
   height: 100px;
   width: 100px;
   margin: 10px;
   cursor: pointer;
   border: 2px solid white;
+}
+
+img.full_screen {
+  width: 100%;
+  height: 100%;
 }
 
 img:hover {

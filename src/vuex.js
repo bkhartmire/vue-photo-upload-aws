@@ -3,6 +3,7 @@ import Vue from "vue";
 import { listObjects, saveObject } from "../utils/index";
 
 Vue.use(Vuex);
+
 export default new Vuex.Store({
   state: {
     title: "Photo Upload App",
@@ -26,15 +27,20 @@ export default new Vuex.Store({
         state.selectedPhoto.fileName = file.name;
       });
     },
-    getPhotos: state => {
+    getPhotos: (state, photos) => {
+      let counter = 0;
+      state.photos = photos.map(obj => {
+        return {
+          id: ++counter,
+          fileName: obj.Key
+        };
+      });
+    }
+  },
+  actions: {
+    fetchPhotos: ({ commit }) => {
       listObjects().then(res => {
-        let counter = 0;
-        state.photos = res.map(obj => {
-          return {
-            id: ++counter,
-            fileName: obj.Key
-          };
-        });
+        commit("getPhotos", res);
       });
     }
   }

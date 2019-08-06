@@ -5,12 +5,11 @@
 </template>
 
 <script>
-import store from "../vuex";
 export default {
   name: "Upload",
   methods: {
     uploadFunction() {
-      store.commit("uploadPhoto", event);
+      this.$store.commit("uploadPhoto", event);
     }
   }
 };

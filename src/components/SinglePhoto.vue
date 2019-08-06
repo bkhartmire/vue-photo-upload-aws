@@ -10,14 +10,12 @@
 </template>
 
 <script>
-import store from "../vuex";
-
 export default {
   name: "SinglePhoto",
   props: ["fileName", "size"],
   methods: {
     select() {
-      store.commit("selectPhoto", this.fileName);
+      this.$store.commit("selectPhoto", this.fileName);
     }
   }
 };

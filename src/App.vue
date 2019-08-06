@@ -18,7 +18,6 @@
 <script>
 import Navbar from "./components/Navbar";
 import SinglePhoto from "./components/SinglePhoto";
-import store from "./vuex.js";
 
 export default {
   name: "App",
@@ -28,20 +27,20 @@ export default {
   },
   computed: {
     title() {
-      return store.state.title;
+      return this.$store.state.title;
     },
     photos() {
-      return store.state.photos;
+      return this.$store.state.photos;
     },
     selectedPhoto() {
-      return store.state.selectedPhoto;
+      return this.$store.state.selectedPhoto;
     },
     currentView() {
-      return store.state.currentView;
+      return this.$store.state.currentView;
     }
   },
   created: function() {
-    store.commit("getPhotos");
+    this.$store.dispatch("fetchPhotos");
   }
 };
 </script>

@@ -15,9 +15,6 @@ import store from "../vuex";
 export default {
   name: "SinglePhoto",
   props: ["fileName", "size"],
-  created: function() {
-    const name = this.fileName;
-  },
   methods: {
     select() {
       store.commit("selectPhoto", this.fileName);

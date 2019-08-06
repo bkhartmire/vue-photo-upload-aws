@@ -1,23 +1,30 @@
 <template>
   <div id="navbar">
     <div id="view-all">
-      <button v-on:click="$emit('view-all')">View All</button>
+      <button @click="viewAll">View All</button>
     </div>
     <div id="title">
       <h1>{{title}}</h1>
     </div>
-    <upload :uploadFunction="uploadFunction" />
+    <upload />
   </div>
 </template>
 
 <script>
 import Upload from "./Upload";
+import store from "../vuex";
+
 export default {
   name: "Navbar",
   components: {
     upload: Upload
   },
-  props: ["title", "uploadFunction"]
+  props: ["title"],
+  methods: {
+    viewAll() {
+      return store.commit("viewAll");
+    }
+  }
 };
 </script>
 

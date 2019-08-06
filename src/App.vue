@@ -3,23 +3,14 @@
     <img alt="Vue logo" src="./assets/logo.png" />
     <h1>{{ title }}</h1>
 
-    <navbar
-      v-on:view-all="viewAll"
-      v-bind:title="selectedPhoto.fileName"
-      :uploadFunction="uploadPhoto"
-    />
+    <navbar :title="selectedPhoto.fileName" />
 
     <div v-if="currentView==='All'">
-      <singlephoto
-        v-for="photo in photos"
-        v-bind:key="photo.id"
-        v-bind:fileName="photo.fileName"
-        size="small"
-        v-on:select="selectPhoto"
-      />
+      <singlephoto v-for="photo in photos" :key="photo.id" :fileName="photo.fileName" size="small" />
     </div>
+
     <div v-if="currentView==='Single'">
-      <singlephoto size="full_screen" v-bind:fileName="selectedPhoto.fileName" />
+      <singlephoto size="full_screen" :fileName="selectedPhoto.fileName" />
     </div>
   </div>
 </template>
@@ -27,7 +18,7 @@
 <script>
 import Navbar from "./components/Navbar";
 import SinglePhoto from "./components/SinglePhoto";
-import { listObjects, saveObject } from "../utils/index";
+import store from "./vuex.js";
 
 export default {
   name: "App",
@@ -35,40 +26,22 @@ export default {
     navbar: Navbar,
     singlephoto: SinglePhoto
   },
-  data: () => ({
-    title: "Photo Upload App",
-    currentView: "All",
-    photos: [],
-    selectedPhoto: { fileName: "" }
-  }),
-  created: function() {
-    listObjects().then(res => {
-      let counter = 0;
-      this.photos = res.map(obj => {
-        return {
-          id: ++counter,
-          fileName: obj.Key
-        };
-      });
-    });
-  },
-
-  methods: {
-    viewAll() {
-      this.currentView = "All";
-      this.selectedPhoto.fileName = "";
+  computed: {
+    title() {
+      return store.state.title;
     },
-    selectPhoto(payload) {
-      this.currentView = "Single";
-      this.selectedPhoto.fileName = payload;
+    photos() {
+      return store.state.photos;
     },
-    uploadPhoto(e) {
-      const file = e.target.files[0];
-      saveObject(file).then(() => {
-        this.currentView = "Single";
-        this.selectedPhoto.fileName = file.name;
-      });
+    selectedPhoto() {
+      return store.state.selectedPhoto;
+    },
+    currentView() {
+      return store.state.currentView;
     }
+  },
+  created: function() {
+    store.commit("getPhotos");
   }
 };
 </script>

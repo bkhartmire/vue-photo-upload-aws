@@ -1,13 +1,18 @@
 <template>
   <div id="upload">
-    <input type="file" v-on:change.prevent="uploadFunction" />
+    <input type="file" @change.prevent="uploadFunction" />
   </div>
 </template>
 
 <script>
+import store from "../vuex";
 export default {
   name: "Upload",
-  props: ["uploadFunction"]
+  methods: {
+    uploadFunction() {
+      store.commit("uploadPhoto", event);
+    }
+  }
 };
 </script>
 
